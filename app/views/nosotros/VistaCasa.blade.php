@@ -257,21 +257,6 @@
 	</div>
 </div>
 
-
-<!-- Mensaje Modal -->
-<div class="modal fade" id="myEmailModal" tabindex="-1" style="margin-top:2em !important" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>                     </button>
-				<h4 class="modal-title" id="myModalLabel">Mensaje</h4>
-			</div>
-			<div class="modal-body">
-				SU MENSAJE FUE ENVIADO, GRACIAS POR COMPARTIR ESTA PROPIEDAD.
-		    </div>
-        </div>
-    </div>
-</div>
 <!---------------------------------------------------------------------------------------------------------------------------------->
 
 <hr>
@@ -378,6 +363,21 @@
 			{{ Form::close() }}
 		</div>
 	</div>
+</div>
+
+<!-- Mensaje Modal -->
+<div class="modal fade" id="myEmailModal" tabindex="-1" style="margin-top:2em !important" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>                     </button>
+				<h4 class="modal-title" id="myModalLabel">Mensaje</h4>
+			</div>
+			<div class="modal-body">
+				SU MENSAJE FUE ENVIADO, GRACIAS POR COMPARTIR ESTA PROPIEDAD.
+		    </div>
+        </div>
+    </div>
 </div>
 
 
