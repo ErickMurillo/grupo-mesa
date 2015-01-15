@@ -645,16 +645,16 @@ Route::post('admin/agregarImagen/upload', function()
 	{
 		$ultimo = Propiedad::all();
 		
-		$file->move('upload', $ultimo->last()->titulo . $file->getClientOriginalName()); // le puse el titulo al comienzo por si quieren subir imagenes del mismo nombre.. no se si el titulo es unico.. fijense bien en eso xq si suben una imagen con un nombre q ya existe la sobreescribe.. putos
+		$file->move('upload', $ultimo->last()->id . $file->getClientOriginalName()); // le puse el titulo al comienzo por si quieren subir imagenes del mismo nombre.. no se si el titulo es unico.. fijense bien en eso xq si suben una imagen con un nombre q ya existe la sobreescribe.. putos
 
-		$img = Image::make('upload/'. $ultimo->last()->titulo . $file->getClientOriginalName());
+		$img = Image::make('upload/'. $ultimo->last()->id . $file->getClientOriginalName());
       	//$img->resize(800, 600); x si quiere cambiar el tamoño 
        $img->insert('img/marca.png', 'center');
-        $img->save('upload/'. $ultimo->last()->titulo . $file->getClientOriginalName());
+        $img->save('upload/'. $ultimo->last()->id . $file->getClientOriginalName());
 
       
 		$imagen = new Imagen();        
-		$imagen->ruta = $ultimo->last()->titulo . $file->getClientOriginalName();               
+		$imagen->ruta = $ultimo->last()->id . $file->getClientOriginalName();               
 		$imagen->id_propiedad = $ultimo->last()->id;
 
 		$imagen->save();

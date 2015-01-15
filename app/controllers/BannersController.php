@@ -6,10 +6,10 @@ class BannersController extends \BaseController {
 		if(Input::get()){	
 			if($this->validateForms(Input::all()) === true){
 				$banners = new Banner();
-		  		$file = Input::file("file")->getClientOriginalName();
+		  		$file = 'bannerprincipalpaginagrupomesa'. Input::file("file")->getClientOriginalName();
 
 		 		 if(file_exists("img/" . $_FILES["file"]["name"])){
-     					$file = Input::file("file")->getClientOriginalName(); 	
+     					$file = 'bannerprincipalpaginagrupomesa'. Input::file("file")->getClientOriginalName(); 	
 		     		}else{
 		     			move_uploaded_file($_FILES["file"]["tmp_name"], "img/" . $_FILES["file"]["name"]);
 		     		}
@@ -40,7 +40,7 @@ class BannersController extends \BaseController {
 
 			if(Input::hasFile('imagen')) {
 		       	Input::file('imagen')->move('img', Input::file("imagen")->getClientOriginalName());
-		       	$file = Input::file("imagen")->getClientOriginalName();
+		       	$file = 'bannerprincipalpaginagrupomesa'. Input::file("imagen")->getClientOriginalName();
 
 			$img = Image::make('img/'. $file);
       	   //$img->resize(1280, 720); x si quiere cambiar el tamoño 

@@ -12,8 +12,8 @@ class PropiedadesImgController extends \BaseController {
 		  		$file = Input::file("file")->getClientOriginalName();
 
 		 		 if(Input::hasFile('file')) {
-		       	Input::file('file')->move('upload', $propi->titulo.Input::file("file")->getClientOriginalName());
-		       	$file = $propi->titulo.Input::file("file")->getClientOriginalName();
+		       	Input::file('file')->move('upload', $propi->id.Input::file("file")->getClientOriginalName());
+		       	$file = $propi->id.Input::file("file")->getClientOriginalName();
 	     		} 
 
 
@@ -56,8 +56,8 @@ class PropiedadesImgController extends \BaseController {
 
 
 			if(Input::hasFile('imagen')) {
-		       	Input::file('imagen')->move('upload', $aux->titulo.Input::file("imagen")->getClientOriginalName());
-		       	$file = $aux->titulo.Input::file("imagen")->getClientOriginalName();
+		       	Input::file('imagen')->move('upload', $aux->id.Input::file("imagen")->getClientOriginalName());
+		       	$file = $aux->id.Input::file("imagen")->getClientOriginalName();
 	     	} 
 
 	     	$img = Image::make('upload/'. $file);
