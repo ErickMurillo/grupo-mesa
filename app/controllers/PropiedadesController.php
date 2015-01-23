@@ -38,7 +38,7 @@
 				$propiedad->observaciones = Input::get('observaciones');				
 				$propiedad->latitud = Input::get('lat');
 				$propiedad->longitud = Input::get('lon');
-				$propiedad->id_usuario = Input::get('id_usuario');
+				$propiedad->id_usuario = Input::get('encargado');//esto fue lo q cambie antes estaba como id_usuario
 				$propiedad->url = Input::get('url');
 				$propiedad->id_propietario = Input::get('propietario');
 

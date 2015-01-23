@@ -31,7 +31,7 @@
 					@endforeach
 				</select>
 			@else
-				<input type="text" name="encargado" class="form-control" disabled="disable" value={{ Auth::user()->username }}>
+				<input type="text" name="encargado" class="form-control" disabled="disable" value="{{ Auth::user()->username }}">
 			@endif
 			
 

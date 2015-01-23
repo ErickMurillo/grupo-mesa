@@ -39,13 +39,18 @@ class BannersController extends \BaseController {
 
 
 			if(Input::hasFile('imagen')) {
-		       	Input::file('imagen')->move('img', Input::file("imagen")->getClientOriginalName());
+
+				//solo esta linea cambia
+		       	Input::file('imagen')->move('img', 'bannerprincipalpaginagrupomesa'. Input::file("imagen")->getClientOriginalName());
+		       	//
+		      
+		     
 		       	$file = 'bannerprincipalpaginagrupomesa'. Input::file("imagen")->getClientOriginalName();
 
-			$img = Image::make('img/'. $file);
-      	   //$img->resize(1280, 720); x si quiere cambiar el tamoño 
-			$img->insert('img/marca.png', 'bottom-right');
-			$img->save('img/'. $file);
+				$img = Image::make('img/'. $file);
+	      	   //$img->resize(1280, 720); x si quiere cambiar el tamoño 
+				$img->insert('img/marca.png', 'bottom-right');
+				$img->save('img/'. $file);
 
 	     	} 
 
