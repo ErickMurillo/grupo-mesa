@@ -60,6 +60,41 @@ Route::post('send/email', function(){
 	// Session::flash('message', 'Mensaje enviado');
 	return Redirect::back();
 });
+//Ruta para compartir por correo
+Route::post('send/shareemailcasa', function(){
+
+	$data = array(    
+                    'idshare'       => Input::get('idshare'),
+				    'tiposhare'     => Input::get('tiposhare'),
+				    'tituloshare'   => Input::get('tituloshare'),
+				    'descshare'     => Input::get('descshare'),
+				    'banosshare'    => Input::get('banosshare'),
+				    'cuartosshare'  => Input::get('cuartosshare'),
+				    'terrenoshare'  => Input::get('terrenoshare'),
+                    'medidashare'   => Input::get('medidashare'),
+				    'urlshare'      => Input::get('urlshare'),
+				    
+                    'pvtashare'     => Input::get('pvtashare'),
+                    'palshare'      => Input::get('palshare'),
+                    'anuncioshare'  => Input::get('anuncioshare'),
+				    
+				    'detalleshare'  => Input::get('detalleshare'),
+        
+                    'name1'         => Input::get('nombre1'),        
+                    'email1'        => Input::get('email1'),
+                    'nameto'        => Input::get('nameto'),
+                    'emailto'       => Input::get('emailto'),
+                    'mensaje1'      => Input::get('mensaje1')
+    );
+
+	Mail::send('emails.welcome3',  $data, function($message) use($data)
+	{
+		$message->to(Input::get('emailto'), 'Cliente')->subject('Propiedad Recomendada por '.Input::get('nombre1'))->cc('ventas@grupo-mesa.com');
+	});
+
+	Session::flash('message', 'Mensaje enviado');
+	return Redirect::back();
+});
 
 Route::post('send/emailcasa', function(){
 
@@ -290,6 +325,13 @@ Route::group(array('before' => 'auth'), function()
 		$propiedades = DB::table('propiedades')->where('estado','1')->orderby('created_at','DESC')->paginate(10);
 	
 		return View::make('administrador.PropiedadesActivas')->with('propiedades', $propiedades);// vista de las propiedades activas
+	});
+
+	Route::get('admin/filtro/propiedad/inactivas', function(){
+
+		$propiedades = DB::table('propiedades')->where('estado','0')->orderby('created_at','DESC')->paginate(10);
+	
+		return View::make('administrador.PropiedadesInactivas')->with('propiedades', $propiedades);// vista de las propiedades activas
 	});
 
 
@@ -603,16 +645,16 @@ Route::post('admin/agregarImagen/upload', function()
 	{
 		$ultimo = Propiedad::all();
 		
-		$file->move('upload', $ultimo->last()->titulo . $file->getClientOriginalName()); // le puse el titulo al comienzo por si quieren subir imagenes del mismo nombre.. no se si el titulo es unico.. fijense bien en eso xq si suben una imagen con un nombre q ya existe la sobreescribe.. putos
+		$file->move('upload', $ultimo->last()->id . $file->getClientOriginalName()); // le puse el titulo al comienzo por si quieren subir imagenes del mismo nombre.. no se si el titulo es unico.. fijense bien en eso xq si suben una imagen con un nombre q ya existe la sobreescribe.. putos
 
-		$img = Image::make('upload/'. $ultimo->last()->titulo . $file->getClientOriginalName());
+		$img = Image::make('upload/'. $ultimo->last()->id . $file->getClientOriginalName());
       	//$img->resize(800, 600); x si quiere cambiar el tamoño 
        $img->insert('img/marca.png', 'center');
-        $img->save('upload/'. $ultimo->last()->titulo . $file->getClientOriginalName());
+        $img->save('upload/'. $ultimo->last()->id . $file->getClientOriginalName());
 
       
 		$imagen = new Imagen();        
-		$imagen->ruta = $ultimo->last()->titulo . $file->getClientOriginalName();               
+		$imagen->ruta = $ultimo->last()->id . $file->getClientOriginalName();               
 		$imagen->id_propiedad = $ultimo->last()->id;
 
 		$imagen->save();

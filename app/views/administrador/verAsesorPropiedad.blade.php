@@ -9,6 +9,11 @@
 	<h4 style="text-align:center;"><strong>Filtro por Usuario</strong></h4>
 </div>
 
+<div class="col-sm-offset-5">
+		<div class="panel-body">
+			<a href="{{URL::to('administrador/verPropiedades')}}"><button type="button" id="boton" class="btn btn-primary" ><span class="glyphicon glyphicon-chevron-left" style="margin-right:0.6em;"></span>Regresar</button></a>
+		</div>
+	</div>
 
 @if($propiedades->count() == 0)
 <br><br>
@@ -44,11 +49,14 @@
 					$municipio = DB::table('municipio')->where('id', $value->municipio)->first();
 					$img = DB::table('propiedades_img')->where('id_propiedad', $value->id)->first();
 					$usar = DB::table('usuarios')->where('username', $value->id_usuario)->first();
+
+					if(!$img) $img = 'noimage.jpg';
+					else $img = $img->ruta;
 				?>
 			<tr>
 
 				<td style="text-align:center;">
-				 <img style="width:120px;" src="{{ asset('upload/'. $img->ruta .'') }}" alt="..."> 
+				 <img style="width:120px;" src="{{ asset('upload/'. $img .'') }}" alt="..."> 
 				</td style="text-align:center;">
 				<td style="text-align:center;">{{ $value->visitas  }}</td>
 

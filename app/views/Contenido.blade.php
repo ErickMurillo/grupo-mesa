@@ -35,8 +35,8 @@
 
     <div class="viewprinc view-second">
     <?php $imagen = PropiedadImg::where('id_propiedad', '=', $value->id )->orderBy('id')->first(); ?>
-    @if($imagen->count() == 0)
-    <img src="" width="80%"/>
+    @if(!$imagen)
+    <img src="{{ asset('img/noimage.jpg') }}" width="80%"/>
     @else
      <img src="{{ asset('upload/'. $imagen->ruta .'') }}" width="80%"/>
     @endif                  
@@ -63,7 +63,7 @@
         </li>
         <?php
             $valor = " ";
-            if($value->moneda == 'dolares'){
+            if($value->moneda == 'Dolares'){
               $valor="U$";
             }else{
               $valor="C$";
@@ -72,27 +72,27 @@
 
     @if($value->tipoanuncio == 'Venta')
     <li class="list-group-item">
-        <i class="pull-left usa">U</i>
-        <i class="pull-left fa fa-usd fa-lg"></i>
+        <i class="pull-left usa"><strong>U</strong></i>
+        <i class="pull-left fa fa-usd"></i>
         <p class="pull-left"><strong>Venta: {{$valor}} {{$value->precioventa}}</strong></p>
     </li>
     <li class="limpio list-group-item"></li>
     @elseif($value->tipoanuncio == 'Alquiler')
     <li class="list-group-item">
-        <i class="pull-left usa">U</i>
-        <i class="pull-left fa fa-usd fa-lg"></i>
+        <i class="pull-left usa"><strong>U</strong></i>
+        <i class="pull-left fa fa-usd"></i>
         <p class="pull-left"><strong>Alquiler: {{$valor}} {{$value->precioalquiler}} {{ $value->tiempo }}</strong></strong></p>
     </li>
     <li class="limpio list-group-item"></li>
     @else
     <li class="list-group-item">
-        <i class="pull-left usa">U</i>
-        <i class="pull-left fa fa-usd fa-lg"></i>
+        <i class="pull-left usa"><strong>U</strong></i>
+        <i class="pull-left fa fa-usd"></i>
         <p class="pull-left"><strong>Venta: {{$valor}} {{$value->precioventa}}</strong></p>
     </li>
     <li class="list-group-item">
-        <i class="pull-left usa">U</i>
-        <i class="pull-left fa fa-usd fa-lg"></i>
+        <i class="pull-left usa"><strong>U</strong></i>
+        <i class="pull-left fa fa-usd "></i>
         <p class="pull-left"><strong>Alquiler: {{$valor}} {{$value->precioalquiler}} {{ $value->tiempo }}</strong></strong></p>
     </li>
     @endif

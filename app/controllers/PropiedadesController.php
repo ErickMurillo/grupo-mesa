@@ -38,7 +38,7 @@
 				$propiedad->observaciones = Input::get('observaciones');				
 				$propiedad->latitud = Input::get('lat');
 				$propiedad->longitud = Input::get('lon');
-				$propiedad->id_usuario = Input::get('id_usuario');
+				$propiedad->id_usuario = Input::get('encargado');//esto fue lo q cambie antes estaba como id_usuario
 				$propiedad->url = Input::get('url');
 				$propiedad->id_propietario = Input::get('propietario');
 
@@ -265,44 +265,67 @@
 			 	$hasta=999999999999999;
 			 }
 
+			 if($municipio == 'Todos'){
+			 	$municipio = 'Mun';
+			 }
+
+			 if($zona == ''){
+			 	$zona = 'Zone';
+			 }
+
+			
 		
 			if ($codigo != '') {
-				if ($venta == 'Venta') {
+				
 					$resultado = Propiedad::where('estado','=','1')
 					->where('codigo', '=', ''.$codigo.'')
-					->where('tipoanuncio', '=', 'Venta')->get();
+					->get();
+
+					return View::make('buscador')->with('propiedades', $resultado);
+				
 
 					
-				}else{
-					$resultado = Propiedad::where('estado','=','1')
-					->where('codigo', '=', ''.$codigo.'')
-					->where('tipoanuncio', '=', 'Alquiler')->get();
-
-					
-				}
+				
 			}elseif($bl != ''){
 				if ($venta == 'Venta') {
 					$resultado = Propiedad::where('estado','=','1')
 					->where('titulo','like','%'.$bl.'%')
-					->where('tipoanuncio', '=', 'Venta')->get();
-				}else{
+					->whereIn('tipoanuncio', array('Venta', 'Venta y Alquiler'))
+					->orwhere('tipoanuncio','like','%'.$bl.'%')
+					->orwhere('tipopropiedad','like','%'.$bl.'%')
+					->orwhere('estadofisico','like','%'.$bl.'%')
+					->orwhere('descripcion','like','%'.$bl.'%')
+					->orwhere('zona','like','%'.$bl.'%')
+					->get();
+				} else {
 					$resultado = Propiedad::where('estado','=','1')
 					->where('titulo','like','%'.$bl.'%')
-					->where('tipoanuncio', '=', 'Alquiler')->get();
+					->whereIn('tipoanuncio', array('Alquiler', 'Venta y Alquiler'))
+					->orwhere('tipoanuncio','like','%'.$bl.'%')
+					->orwhere('tipopropiedad','like','%'.$bl.'%')
+					->orwhere('estadofisico','like','%'.$bl.'%')
+					->orwhere('descripcion','like','%'.$bl.'%')
+					->orwhere('zona','like','%'.$bl.'%')
+					->get();
 				}
+				
+					
+
+					return View::make('buscador')->with('propiedades', $resultado);
+				
 
 			}elseif($codigo == '' && $bl == ''){
 				if ($venta == 'Venta') {
 					if ($zona != 'Zone' && $municipio != 'Mun' && $departamento != 'Dep') {
 						if ($tipo == 'Todos') {
 							$resultado = Propiedad::where('zona', '=', ''.$zona.'')
-							->where('tipoanuncio', '=', 'Venta')
+							->whereIn('tipoanuncio', array('Venta', 'Venta y Alquiler'))
 							->whereBetween('precioventa', array(''.$desde.'', ''.$hasta.''))
 							->where('estado', '=', '1')
 							->get();
 						}else{
 							$resultado = Propiedad::where('zona', '=', ''.$zona.'')
-							->where('tipoanuncio', '=', 'Venta')
+							->whereIn('tipoanuncio', array('Venta', 'Venta y Alquiler'))
 							->where('tipopropiedad', '=', ''.$tipo.'')
 							->whereBetween('precioventa', array(''.$desde.'', ''.$hasta.''))
 							->where('estado', '=', '1')
@@ -312,65 +335,103 @@
 					}elseif($municipio != 'Mun' && $zona == 'Zone' && $departamento != 'Dep'){
 						if ($tipo == 'Todos') {
 							$resultado = Propiedad::where('municipio', '=', ''.$municipio.'')
-							->where('tipoanuncio', '=', 'Venta')
+							->whereIn('tipoanuncio', array('Venta', 'Venta y Alquiler'))
 							->whereBetween('precioventa', array(''.$desde.'', ''.$hasta.''))
 							->where('estado', '=', '1')
 							->get();
 						}else{
 							$resultado = Propiedad::where('municipio', '=', ''.$municipio.'')
-							->where('tipoanuncio', '=', 'Venta')
+							->whereIn('tipoanuncio', array('Venta', 'Venta y Alquiler'))
 							->where('tipopropiedad', '=', ''.$tipo.'')
 							->whereBetween('precioventa', array(''.$desde.'', ''.$hasta.''))
 							->where('estado', '=', '1')
 							->get();
 						}
-					}
-					
-				}else{
-					if ($zona != 'Zone') {
+
+
+
+					}elseif($municipio == 'Mun' && $zona == 'Zone' && $departamento != 'Dep'){
 						if ($tipo == 'Todos') {
-							$resultado = Propiedad::where('zona', '=', ''.$zona.'')
-							->where('tipoanuncio', '=', 'Alquiler')
+							$resultado = Propiedad::where('departamento', '=', ''.$departamento.'')
+							->whereIn('tipoanuncio', array('Venta', 'Venta y Alquiler'))
 							->whereBetween('precioventa', array(''.$desde.'', ''.$hasta.''))
 							->where('estado', '=', '1')
 							->get();
 						}else{
-							$resultado = Propiedad::where('zona', '=', ''.$zona.'')
-							->where('tipoanuncio', '=', 'Alquiler')
+							$resultado = Propiedad::where('departamento', '=', ''.$departamento.'')
+							->whereIn('tipoanuncio', array('Venta', 'Venta y Alquiler'))
 							->where('tipopropiedad', '=', ''.$tipo.'')
 							->whereBetween('precioventa', array(''.$desde.'', ''.$hasta.''))
+							->where('estado', '=', '1')
+							->get();
+						}
+
+
+						
+					}
+					
+				}else{
+					if ($zona != 'Zone' && $municipio != 'Mun' && $departamento != 'Dep') {
+						if ($tipo == 'Todos') {
+							$resultado = Propiedad::where('zona', '=', ''.$zona.'')
+							->whereIn('tipoanuncio', array('Alquiler', 'Venta y Alquiler'))
+							->whereBetween('precioalquiler', array(''.$desde.'', ''.$hasta.''))
+							->where('estado', '=', '1')
+							->get();
+						}else{
+							$resultado = Propiedad::where('zona', '=', ''.$zona.'')
+							->whereIn('tipoanuncio', array('Alquiler', 'Venta y Alquiler'))
+							->where('tipopropiedad', '=', ''.$tipo.'')
+							->whereBetween('precioalquiler', array(''.$desde.'', ''.$hasta.''))
 							->where('estado', '=', '1')
 							->get();
 						}
 						
-					}elseif($municipio != 'Mun'){
+					}elseif($municipio != 'Mun' && $zona == 'Zone' && $departamento != 'Dep'){
 						if ($tipo == 'Todos') {
 							$resultado = Propiedad::where('municipio', '=', ''.$municipio.'')
-							->where('tipoanuncio', '=', 'Alquiler')
-							->whereBetween('precioventa', array(''.$desde.'', ''.$hasta.''))
+							->whereIn('tipoanuncio', array('Alquiler', 'Venta y Alquiler'))
+							->whereBetween('precioalquiler', array(''.$desde.'', ''.$hasta.''))
 							->where('estado', '=', '1')
 							->get();
 						}else{
 							$resultado = Propiedad::where('municipio', '=', ''.$municipio.'')
-							->where('tipoanuncio', '=', 'Alquiler')
+							->whereIn('tipoanuncio', array('Alquiler', 'Venta y Alquiler'))
 							->where('tipopropiedad', '=', ''.$tipo.'')
-							->whereBetween('precioventa', array(''.$desde.'', ''.$hasta.''))
+							->whereBetween('precioalquiler', array(''.$desde.'', ''.$hasta.''))
+							->where('estado', '=', '1')
+							->get();
+						}
+					}elseif($municipio == 'Mun' && $zona == 'Zone' && $departamento != 'Dep'){
+						if ($tipo == 'Todos') {
+							$resultado = Propiedad::where('departamento', '=', ''.$departamento.'')
+							->whereIn('tipoanuncio', array('Alquiler', 'Venta y Alquiler'))
+							->whereBetween('precioalquiler', array(''.$desde.'', ''.$hasta.''))
+							->where('estado', '=', '1')
+							->get();
+						}else{
+							$resultado = Propiedad::where('departamento', '=', ''.$departamento.'')
+							->whereIn('tipoanuncio', array('Alquiler', 'Venta y Alquiler'))
+							->where('tipopropiedad', '=', ''.$tipo.'')
+							->whereBetween('precioalquiler', array(''.$desde.'', ''.$hasta.''))
 							->where('estado', '=', '1')
 							->get();
 						}
 					}
+
+
 					
 				}
 			}
 
 			if ($departamento == 'Dep' && $venta == 'Venta') {
 				if ($tipo == 'Todos') {
-							$resultado = Propiedad::where('tipoanuncio', '=', 'Venta')
+							$resultado = Propiedad::whereIn('tipoanuncio', array('Venta', 'Venta y Alquiler'))
 							->whereBetween('precioventa', array(''.$desde.'', ''.$hasta.''))
 							->where('estado', '=', '1')
 							->get();
 						}else{
-							$resultado = Propiedad::where('tipoanuncio', '=', 'Venta')
+							$resultado = Propiedad::whereIn('tipoanuncio', array('Venta', 'Venta y Alquiler'))
 							->where('tipopropiedad', '=', ''.$tipo.'')
 							->whereBetween('precioventa', array(''.$desde.'', ''.$hasta.''))
 							->where('estado', '=', '1')
@@ -381,14 +442,14 @@
 
 			if ($departamento == 'Dep' && $venta == 'Alquiler') {
 				if ($tipo == 'Todos') {
-							$resultado = Propiedad::where('tipoanuncio', '=', 'Alquiler')
-							->whereBetween('precioventa', array(''.$desde.'', ''.$hasta.''))
+							$resultado = Propiedad::whereIn('tipoanuncio', array('Alquiler', 'Venta y Alquiler'))
+							->whereBetween('precioalquiler', array(''.$desde.'', ''.$hasta.''))
 							->where('estado', '=', '1')
 							->get();
 						}else{
-							$resultado = Propiedad::where('tipoanuncio', '=', 'Alquiler')
+							$resultado = Propiedad::whereIn('tipoanuncio', array('Alquiler', 'Venta y Alquiler'))
 							->where('tipopropiedad', '=', ''.$tipo.'')
-							->whereBetween('precioventa', array(''.$desde.'', ''.$hasta.''))
+							->whereBetween('precioalquiler', array(''.$desde.'', ''.$hasta.''))
 							->where('estado', '=', '1')
 							->get();
 						}
